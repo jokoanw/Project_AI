@@ -1,0 +1,14 @@
+import google.generativeai as genai
+
+# Ini API Key kamu yang tadi
+genai.configure(api_key="AIzaSyDqAxi0m6xbiYL1D2ELaTDvrxcaSZtjJrA")
+
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+print("AI sedang berpikir...")
+
+# Kita tes AI-nya untuk menyapa kamu
+response = model.generate_content("Halo! Tolong beri satu kalimat semangat untuk mahasiswa baru jurusan Fisika yang lagi asyik belajar coding Python.")
+
+print("Jawaban AI:")
+print(response.text)
