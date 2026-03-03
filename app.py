@@ -1,10 +1,11 @@
+import os
 from flask import Flask, render_template, request, jsonify
 from google import genai
 
 app = Flask(__name__)
 
 # API Key kamu
-client = genai.Client(api_key="AIzaSyDqAxi0m6xbiYL1D2ELaTDvrxcaSZtjJrA")
+client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 @app.route('/')
 def home():

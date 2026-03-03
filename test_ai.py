@@ -1,7 +1,7 @@
 from google import genai
 
 # Ini API Key kamu
-client = genai.Client(api_key="AIzaSyDqAxi0m6xbiYL1D2ELaTDvrxcaSZtjJrA")
+client = genai.Client(api_key="AIzaSyCc4n8BxlABh6F4N9dYYWZ4uGsE76Jrn4E")
 
 print("AI sedang berpikir...")
 
