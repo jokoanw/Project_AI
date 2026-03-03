@@ -22,10 +22,7 @@
         .chat-container { width: 100%; max-width: 500px; background: #2a2a40; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 20px; display: flex; flex-direction: column; }
         h2 { text-align: center; color: #00d2ff; margin-top: 0; }
         #chat-box { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding-right: 10px; scroll-behavior: smooth; }
-        
-        /* KUNCI: white-space: pre-wrap bikin enter dari AI langsung rapi tanpa merusak MathJax */
         .message { padding: 12px 18px; border-radius: 15px; max-width: 80%; line-height: 1.5; font-size: 15px; word-wrap: break-word; white-space: pre-wrap; }
-        
         .user-msg { background-color: #00d2ff; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
         .ai-msg { background-color: #3f3f5a; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; }
         .input-area { display: flex; gap: 10px; }
@@ -49,7 +46,6 @@
 </div>
 
 <script>
-    // Bikin rumus di pesan pertama muncul
     window.addEventListener('load', () => {
         if (window.MathJax && window.MathJax.typesetPromise) {
             MathJax.typesetPromise();
@@ -71,7 +67,6 @@
         inputField.disabled = true;
         sendBtn.disabled = true;
 
-        // Tampilkan pesan kamu (pakai AppendChild biar rumus lama ga rusak)
         const userDiv = document.createElement('div');
         userDiv.className = 'message user-msg';
         userDiv.textContent = message;
@@ -80,7 +75,6 @@
         inputField.value = ''; 
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        // Tampilkan Loading
         const loadingDiv = document.createElement('div');
         loadingDiv.className = 'message ai-msg';
         loadingDiv.innerHTML = '<i>Bentar, Mainn lagi mikir...</i>';
@@ -95,27 +89,26 @@
             });
             
             const data = await response.json();
-            
-            // Hapus Loading
             chatBox.removeChild(loadingDiv);
             
-            // Rapikan teks tebal Markdown (**)
             let finalReply = data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             
-            // Tampilkan Jawaban AI
             const aiDiv = document.createElement('div');
             aiDiv.className = 'message ai-msg';
             aiDiv.innerHTML = finalReply;
             chatBox.appendChild(aiDiv);
             
-            // Suruh MathJax render rumus HANYA di pesan yang baru muncul!
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                MathJax.typesetPromise([aiDiv]).catch((err) => console.log(err));
-            }
+            // INI JURUSNYA: Kasih waktu 0.1 detik biar browser napas, baru render rumus!
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    MathJax.typesetPromise().then(() => {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    });
+                }
+            }, 100);
             
         } catch (error) {
             if (chatBox.contains(loadingDiv)) chatBox.removeChild(loadingDiv);
-            
             const errDiv = document.createElement('div');
             errDiv.className = 'message ai-msg';
             errDiv.style.color = '#ff4d4d';
