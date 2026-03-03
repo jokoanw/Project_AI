@@ -18,6 +18,18 @@
         button { padding: 15px 25px; background-color: #00d2ff; color: #000; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; }
         button:hover { background-color: #009ecc; }
     </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es6/tex-mml-chtml.js"></script>
+
+<script>
+  // Konfigurasi agar MathJax mau membaca simbol $ dan $$
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
 </head>
 <body>
 
@@ -41,16 +53,51 @@
         const inputField = document.getElementById('user-input');
         const message = inputField.value;
         if (!message) return;
+        async function sendMessage() {
+        const inputField = document.getElementById('user-input');
+        const message = inputField.value;
+        if (!message) return;
 
         const chatBox = document.getElementById('chat-box');
         
+        // Nampilin pesan kamu
         chatBox.innerHTML += `<div class="message user-msg">${message}</div>`;
         inputField.value = ''; 
         chatBox.scrollTop = chatBox.scrollHeight;
 
+        // Nampilin loading
         const loadingId = "loading-" + Date.now();
-        chatBox.innerHTML += `<div id="${loadingId}" class="message ai-msg"><i>Bentar, lagi mikir...</i></div>`;
+        chatBox.innerHTML += `<div id="${loadingId}" class="message ai-msg"><i>Bentar, Mainn lagi mikir...</i></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            
+            // Hapus loading
+            document.getElementById(loadingId).remove();
+            
+            // Format teks (ubah enter jadi baris baru di web)
+            const formattedReply = data.reply.replace(/\n/g, '<br>');
+            
+            // Nampilin jawaban AI
+            chatBox.innerHTML += `<div class="message ai-msg">${formattedReply}</div>`;
+            
+            // --- BAGIAN PALING PENTING: Render Rumus Fisika ---
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch((err) => console.log(err.message));
+            }
+            
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (error) {
+            if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+            chatBox.innerHTML += `<div class="message ai-msg" style="color: #ff4d4d;">Waduh, koneksi putus. Coba lagi ya!</div>`;
+        }
+    }
 
         try {
             const response = await fetch('/chat', {

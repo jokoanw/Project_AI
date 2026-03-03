@@ -1,5 +1,4 @@
 from google import genai
-
 # Ini API Key kamu
 client = genai.Client(api_key="AIzaSyCc4n8BxlABh6F4N9dYYWZ4uGsE76Jrn4E")
 
