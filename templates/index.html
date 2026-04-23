@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asisten Kelas Fisika D</title>
     
-  <script>
+    <script>
       window.MathJax = {
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -24,7 +24,7 @@
         #chat-box { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding-right: 10px; scroll-behavior: smooth; }
         .message { padding: 12px 18px; border-radius: 15px; max-width: 80%; line-height: 1.5; font-size: 15px; word-wrap: break-word; white-space: pre-wrap; }
         .user-msg { background-color: #00d2ff; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
-        .ai-msg { background-color: #3f3f5a; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .ai-msg { background-color: #3f3f5a; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; overflow-x: auto; }
         .input-area { display: flex; gap: 10px; }
         input[type="text"] { flex: 1; padding: 15px; border: none; border-radius: 10px; background: #3f3f5a; color: white; outline: none; font-size: 15px; }
         button { padding: 15px 25px; background-color: #00d2ff; color: #000; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; }
@@ -37,7 +37,7 @@
 <div class="chat-container">
     <h2>⚡ Asisten Kelas Fisika D</h2>
     <div id="chat-box">
-        <div class="message ai-msg">Halo! Aku asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas atau jadwal?</div>
+        <div class="message ai-msg">Halo! Aku Mainn! Asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas atau jadwal kulia?</div>
     </div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Ketik pesanmu di sini..." onkeypress="handleEnter(event)">
@@ -46,12 +46,6 @@
 </div>
 
 <script>
-    window.addEventListener('load', () => {
-        if (window.MathJax && window.MathJax.typesetPromise) {
-            MathJax.typesetPromise();
-        }
-    });
-
     function handleEnter(event) {
         if (event.key === 'Enter') sendMessage();
     }
@@ -61,7 +55,7 @@
         const sendBtn = document.getElementById('send-btn');
         const message = inputField.value.trim();
         const chatBox = document.getElementById('chat-box');
-        
+
         if (!message) return;
 
         inputField.disabled = true;
@@ -71,13 +65,13 @@
         userDiv.className = 'message user-msg';
         userDiv.textContent = message;
         chatBox.appendChild(userDiv);
-        
-        inputField.value = ''; 
+
+        inputField.value = '';
         chatBox.scrollTop = chatBox.scrollHeight;
 
         const loadingDiv = document.createElement('div');
         loadingDiv.className = 'message ai-msg';
-        loadingDiv.innerHTML = '<i>Bentar, Mainn lagi mikir...</i>';
+        loadingDiv.innerHTML = '<i>Mainn lagi mikir...</i>';
         chatBox.appendChild(loadingDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -87,41 +81,37 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: message })
             });
-            
+
             const data = await response.json();
             chatBox.removeChild(loadingDiv);
-            
+
             let finalReply = data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            
+
             const aiDiv = document.createElement('div');
             aiDiv.className = 'message ai-msg';
             aiDiv.innerHTML = finalReply;
             chatBox.appendChild(aiDiv);
-            
-     // JURUS BARU: Suruh MathJax HANYA merender di dalam kotak pesan AI yang baru (aiDiv)
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                MathJax.typesetPromise([aiDiv]).then(() => {
+
+            // JURUS BRUTE-FORCE: Paksa render seluruh kotak chat tanpa terkecuali
+            if (window.MathJax) {
+                MathJax.typesetPromise().then(() => {
                     chatBox.scrollTop = chatBox.scrollHeight;
-                }).catch((err) => console.log('MathJax Error:', err));
-            } else {
-                chatBox.scrollTop = chatBox.scrollHeight;
+                }).catch((err) => console.error("MathJax gagal:", err));
             }
-            
+
         } catch (error) {
             if (chatBox.contains(loadingDiv)) chatBox.removeChild(loadingDiv);
             const errDiv = document.createElement('div');
             errDiv.className = 'message ai-msg';
             errDiv.style.color = '#ff4d4d';
-            errDiv.textContent = 'Waduh, gagal konek ke server. Coba kirim ulang ya!';
+            errDiv.textContent = 'Koneksi terputus. Coba lagi ya!';
             chatBox.appendChild(errDiv);
         } finally {
             inputField.disabled = false;
             sendBtn.disabled = false;
             inputField.focus();
-            chatBox.scrollTop = chatBox.scrollHeight;
         }
     }
 </script>
-
 </body>
 </html>
