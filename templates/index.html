@@ -37,7 +37,7 @@
 <div class="chat-container">
     <h2>⚡ Asisten Kelas Fisika D</h2>
     <div id="chat-box">
-        <div class="message ai-msg">Halo! Aku Mainn. Ada yang mau ditanya soal tugas, jadwal, atau butuh rumus Fisika?</div>
+        <div class="message ai-msg">Halo, Aku Mainn! Asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas atau jadwal kuliah?</div>
     </div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Ketik pesanmu di sini..." onkeypress="handleEnter(event)">
@@ -106,14 +106,15 @@
             inputField.focus();
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // FASE 2: RENDER RUMUS (Dipisah biar kalau crash nggak muncul tulisan merah)
+           // FASE 2: RENDER RUMUS (Sekarang pakai pembersih ingatan)
             setTimeout(() => {
-                if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                if (window.MathJax) {
+                    MathJax.typesetClear(); // <--- INI KUNCINYA: Hapus ingatan lama MathJax!
                     MathJax.typesetPromise().then(() => {
                         chatBox.scrollTop = chatBox.scrollHeight;
                     }).catch(err => console.log("MathJax error:", err));
                 }
-            }, 300);
+            }, 500); // Jeda setengah detik biar AI selesai nulis 100%
         }
     }
 </script>
