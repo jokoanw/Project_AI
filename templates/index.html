@@ -37,7 +37,7 @@
 <div class="chat-container">
     <h2>⚡ Asisten Kelas Fisika D</h2>
     <div id="chat-box">
-        <div class="message ai-msg">Halo! Aku asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas, jadwal, atau materi?</div>
+        <div class="message ai-msg">Halo! Aku asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas atau jadwal?</div>
     </div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Ketik pesanmu di sini..." onkeypress="handleEnter(event)">
@@ -98,14 +98,14 @@
             aiDiv.innerHTML = finalReply;
             chatBox.appendChild(aiDiv);
             
-            // INI JURUSNYA: Kasih waktu 0.1 detik biar browser napas, baru render rumus!
-            setTimeout(() => {
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                    MathJax.typesetPromise().then(() => {
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    });
-                }
-            }, 100);
+     // JURUS BARU: Suruh MathJax HANYA merender di dalam kotak pesan AI yang baru (aiDiv)
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([aiDiv]).then(() => {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }).catch((err) => console.log('MathJax Error:', err));
+            } else {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
             
         } catch (error) {
             if (chatBox.contains(loadingDiv)) chatBox.removeChild(loadingDiv);
