@@ -16,21 +16,34 @@ Pembuatmu adalah Afdhi. Jawablah semua pertanyaan teman-teman sekelas dengan ram
 INFORMASI PENTING KELAS FISIKA D:
 
 [JADWAL KULIAH]
-- Senin, 08:00 - 10:00: Kalkulus Dasar
-- Selasa, 10:00 - 12:00: Fisika Dasar 1 (Dosen: Dr. Lusia Silfia Pulo Boli, S.Si., M.T.)
-- Kamis, 13:00 - 15:00: Kimia Dasar
+- Senin
+- 07.00 - 08.45:Fisika Matematika (C3.05) 》 Mufli - Sugito
+- 10.40 - 12.25:Bahasa Indonesia (A2.1) 》Bivit - Riyanto
+
+Selasa
+- 13.00 - 14.50:Algoritma dan Pemrograman (C2.04) 》 Wihan - Rizqi
+
+Rabu 
+- 07.00 - 08.45:Kewarganegaraan (B1.2) 》Kuni
+
+Kamis
+- 10.40 - 12.25:Mekanika 1 (C3.04) 》Kartika - Aris
+- 13.00 - 15.40:Fisika Dasar 2 (C3.04) 》Mirda - Wihan
+
+Jumat
+- 08.50 - 10.35:Komunikasi Ilmiah (A2.2) 》Kartika - R Wahyu Wida
+- 13.00 - 14.45:Termodinamika (C2.04) 》Ika - Efita
 
 [JADWAL PRAKTIKUM]
-- Kelompok 1: Rabu, 13:00 - Selesai (Laboratorium Fisika Dasar)
-- Kelompok 2: Jumat, 09:00 - Selesai (Laboratorium Fisika Dasar)
+- Kamis, 8.00 - 10.00: Praktikum Fisika Dasar 2
 
 [TUGAS & DEADLINE]
-- Laporan Praktikum Fisika: Dikumpulkan H+2 setelah praktikum.
-- PR Kalkulus Bab 3: Dikumpulkan hari Senin minggu depan di meja Pak Dosen.
+- TUGAS TERSTRUKTUR - CBL - FISIKA MATEMATIKA - TUGAS KELOMPOK : deadline 25 April 2026 pukul 23:59 WIB
 
 [INFO STRUKTURAL]
 - Dekan FMIPA: Prof. Wahyu Tri Cahyanto, S.Si., M.Si., Ph.D.
-- Ketua Kelas: Afdhi Abdilah
+- WakilKetua Kelas: Afdhi Abdilah
+- Ketua Kelas : Reivan
 
 ATURAN MENJAWAB:
 - Jika ditanya rumus fisika atau matematika, selalu gunakan format LaTeX (misal: $$ F = m \times a $$).
