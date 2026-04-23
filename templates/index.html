@@ -17,36 +17,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
     <style>
-        /* 1. Body dibiarkan bebas scroll ke bawah */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1e1e2f; margin: 0; color: #fff; padding-bottom: 100px; }
+        /* 1. Background Pink/Putih Aesthetic */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #FFF5F7; /* Soft Pinkish White */
+            margin: 0; 
+            color: #4A4A4A; /* Teks abu-abu gelap biar elegan dan gampang dibaca */
+            padding-bottom: 120px; /* Jarak aman biar chat terbawah ga ketutup input */
+        }
         
-        /* 2. Container dilebarin biar lega kayak Gemini */
         .chat-container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; }
-        h2 { text-align: center; color: #00d2ff; margin-top: 20px; margin-bottom: 30px; }
         
-        /* 3. Chat box nggak dikurung lagi tingginya */
+        h2 { text-align: center; color: #D6728F; margin-top: 20px; margin-bottom: 30px; font-weight: 700; letter-spacing: 1px;}
+        
         #chat-box { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
         
-        .message { padding: 12px 18px; border-radius: 15px; max-width: 80%; line-height: 1.5; font-size: 15px; word-wrap: break-word; white-space: pre-wrap; }
-        .user-msg { background-color: #00d2ff; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
-        .ai-msg { background-color: #3f3f5a; color: #fff; align-self: flex-start; border-bottom-left-radius: 2px; overflow-x: auto; }
+        .message { padding: 15px 20px; border-radius: 20px; max-width: 80%; line-height: 1.6; font-size: 15px; word-wrap: break-word; white-space: pre-wrap; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         
-        /* 4. Input area ditempel (fixed) di bawah layar */
-        .input-area { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 800px; display: flex; gap: 10px; background-color: #1e1e2f; padding: 10px 0; z-index: 100; }
+        /* Bubble Chat Kamu (Pink Aesthetic) */
+        .user-msg { background-color: #FFB6C1; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 500; }
         
-        input[type="text"] { flex: 1; padding: 15px; border: none; border-radius: 10px; background: #3f3f5a; color: white; outline: none; font-size: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        button { padding: 15px 25px; background-color: #00d2ff; color: #000; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        button:hover { background-color: #009ecc; }
-        button:disabled { background-color: #555; cursor: not-allowed; }
+        /* Bubble Chat Mainn (Putih Bersih) */
+        .ai-msg { background-color: #FFFFFF; color: #4A4A4A; align-self: flex-start; border-bottom-left-radius: 4px; overflow-x: auto; border: 1px solid #FFE4E1; }
+        
+        /* 2. FIX "NEMBUS": Tembok Background Full Width di Bawah */
+        .input-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 245, 247, 0.95); /* Warna background body tapi agak transparan */
+            backdrop-filter: blur(8px); /* Efek blur ala Apple/MacBook */
+            padding: 15px 0 25px 0;
+            box-shadow: 0 -5px 20px rgba(214, 114, 143, 0.1);
+            z-index: 100;
+        }
+
+        .input-area { width: 90%; max-width: 800px; margin: 0 auto; display: flex; gap: 10px; }
+        
+        input[type="text"] { flex: 1; padding: 15px 20px; border: 2px solid #FFE4E1; border-radius: 25px; background: #FFFFFF; color: #4A4A4A; outline: none; font-size: 15px; transition: 0.3s; }
+        input[type="text"]:focus { border-color: #FFB6C1; box-shadow: 0 0 10px rgba(255, 182, 193, 0.3); }
+        input[type="text"]::placeholder { color: #B0B0B0; }
+        
+        button { padding: 15px 30px; background-color: #D6728F; color: #FFFFFF; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s; }
+        button:hover { background-color: #C05C7A; transform: translateY(-2px); }
+        button:disabled { background-color: #D3D3D3; cursor: not-allowed; transform: none; }
+
+        /* Scrollbar Estetik */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #FFB6C1; border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <h2>⚡ Asisten Kelas Fisika D</h2>
+    <h2> Asisten AI Kelas Fisika D </h2>
     <div id="chat-box">
-        <div class="message ai-msg">Halo! Aku Mainn. Ada yang mau ditanya soal tugas, jadwal, atau butuh rumus Fisika?</div>
-    </div>
+<div class="message ai-msg">Halo, Aku Mainn! Aku asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas atau jadwal?</div> </div> 
+</div>
+
+<div class="input-wrapper">
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Ketik pesanmu di sini..." onkeypress="handleEnter(event)">
         <button id="send-btn" onclick="sendMessage()">Kirim</button>
@@ -58,9 +89,8 @@
         if (event.key === 'Enter') sendMessage();
     }
 
-    // Jurus baru: Scroll seluruh layar web, bukan scroll kotaknya
     function scrollToBottom() {
-        window.scrollTo(0, document.body.scrollHeight);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
     async function sendMessage() {
@@ -80,7 +110,7 @@
         chatBox.appendChild(userDiv);
 
         inputField.value = '';
-        scrollToBottom(); // Panggil scroll layar penuh
+        scrollToBottom();
 
         const loadingDiv = document.createElement('div');
         loadingDiv.className = 'message ai-msg';
@@ -108,7 +138,7 @@
             if (window.MathJax) {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, aiDiv]);
                 MathJax.Hub.Queue(function() {
-                    scrollToBottom(); // Scroll lagi setelah rumus mekar
+                    scrollToBottom(); 
                 });
             } else {
                 scrollToBottom();
@@ -119,7 +149,7 @@
             const errDiv = document.createElement('div');
             errDiv.className = 'message ai-msg';
             errDiv.style.color = '#ff4d4d';
-            errDiv.textContent = 'Koneksi terputus. Coba lagi ya!';
+            errDiv.textContent = 'Limit API / Koneksi terputus. Coba lagi ya!';
             chatBox.appendChild(errDiv);
             scrollToBottom();
         } finally {
