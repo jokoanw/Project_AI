@@ -37,7 +37,7 @@
 <div class="chat-container">
     <h2>⚡ Asisten Kelas Fisika D</h2>
     <div id="chat-box">
-        <div class="message ai-msg">Halo! Aku Mainn! Asisten AI kelas kita yang dibuat oleh Afdhi. Ada yang mau ditanya soal tugas atau jadwal kulia?</div>
+        <div class="message ai-msg">Halo! Aku Mainn. Ada yang mau ditanya soal tugas, jadwal, atau butuh rumus Fisika?</div>
     </div>
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Ketik pesanmu di sini..." onkeypress="handleEnter(event)">
@@ -75,6 +75,7 @@
         chatBox.appendChild(loadingDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
+        // FASE 1: TAMPILKAN TEKS AI (Anti-Error)
         try {
             const response = await fetch('/chat', {
                 method: 'POST',
@@ -92,13 +93,6 @@
             aiDiv.innerHTML = finalReply;
             chatBox.appendChild(aiDiv);
 
-            // JURUS BRUTE-FORCE: Paksa render seluruh kotak chat tanpa terkecuali
-            if (window.MathJax) {
-                MathJax.typesetPromise().then(() => {
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }).catch((err) => console.error("MathJax gagal:", err));
-            }
-
         } catch (error) {
             if (chatBox.contains(loadingDiv)) chatBox.removeChild(loadingDiv);
             const errDiv = document.createElement('div');
@@ -110,6 +104,16 @@
             inputField.disabled = false;
             sendBtn.disabled = false;
             inputField.focus();
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // FASE 2: RENDER RUMUS (Dipisah biar kalau crash nggak muncul tulisan merah)
+            setTimeout(() => {
+                if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+                    MathJax.typesetPromise().then(() => {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }).catch(err => console.log("MathJax error:", err));
+                }
+            }, 300);
         }
     }
 </script>
